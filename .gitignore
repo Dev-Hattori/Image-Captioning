@@ -1,2 +1,8 @@
 # Testing Files #
 testng.*
+
+
+
+# Datasets and Models #
+Datasets/
+Models/
