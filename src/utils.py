@@ -1,3 +1,16 @@
+#################################################
+"""
+Utilities 
+"""
+#################################################
+
+
+##############################################
+"""
+Kaggle Utilities
+"""
+##############################################
+
 
 def import_kaggle(creds='{"username":"hattori404","key":"6ad76fc68e2cf37898a898090ab99f23"}'):
     """
@@ -73,3 +86,37 @@ def get_data(url,  # To the dataset
             zip_ref.extractall(Path(path))
         zipped_file.unlink()  # Delete the zipfile
         print("Files Successfully unzipped")
+
+
+#############################################################
+"""
+Non-Kaggle Dataset Utilities
+"""
+#############################################################
+
+
+def download_dataset_from_zipurl(zip_url,  # The url of the zip file
+                                 path,  # Path where the dataset should be extracted to
+                                 unzip=True  # Whether to unzip the zip file or not
+                                 ):
+    import requests
+    import zipfile
+    import io
+
+    if unzip:
+        r = requests.get(zip_url)
+        z = zipfile.ZipFile(io.BytesIO(r.content))
+        z.extractall(path)
+    else:
+        import os
+        os.mkdir(path)
+        r = requests.get(zip_url, stream=True)
+        with open(path/'dataset.zip', 'wb') as fd:
+            for chunk in r.iter_content(chunk_size=128):
+                fd.write(chunk)
+
+
+def extract_zip(from_path, to_path):
+    import zipfile
+    z = zipfile.ZipFile(from_path)
+    z.extractall(to_path)
